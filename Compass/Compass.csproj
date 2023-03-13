@@ -58,6 +58,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompassSettingsHelper.cs" />
+    <Compile Include="CompassUIHelper.cs" />
     <Compile Include="CompassPanel.cs" />
     <Compile Include="CompassLoading.cs" />
     <Compile Include="CompassMod.cs" />

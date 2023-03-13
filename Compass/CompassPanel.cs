@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using ColossalFramework;
 using ColossalFramework.UI;
 
 namespace Compass
@@ -9,6 +10,7 @@ namespace Compass
         private UILabel m_directionLabel;
         private UIDragHandle m_dragHandle;
         private int currentPanelContent;
+        private bool is_active = true;
 
 
         public override void Start()
@@ -54,11 +56,21 @@ namespace Compass
             m_dragHandle.relativePosition = new Vector2(0, 0);
             m_angleLabel.relativePosition = new Vector2(0, 0);
             m_directionLabel.relativePosition = new Vector2(50, 0);
-
         }
 
         public override void Update()
         {
+            PlayerPrefsInputKey savedInputKey = new PlayerPrefsInputKey("CompassKeyHide", SavedInputKey.Encode(KeyCode.C, false, false, true));
+            if(savedInputKey.IsKeyUp())
+            {
+                toggle();
+            }
+            
+            
+            if (!is_active)
+                return;
+            
+            
             base.Update();
 
             int panelDisplay = PlayerPrefs.GetInt("CompassPanelContent", 0);
@@ -109,6 +121,21 @@ namespace Compass
             // Call UpdateDirection every frame to update the text
             UpdateDirection();
         }
+
+        public void toggle()
+        {
+            if(is_active)
+            {
+                this.Hide();
+                is_active = false;
+            }
+            else
+            {
+                this.Show();
+                is_active = true;
+            }
+        }
+
 
         protected override void OnPositionChanged()
         {
