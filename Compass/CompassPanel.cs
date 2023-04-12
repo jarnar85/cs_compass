@@ -56,6 +56,8 @@ namespace Compass
             m_dragHandle.relativePosition = new Vector2(0, 0);
             m_angleLabel.relativePosition = new Vector2(0, 0);
             m_directionLabel.relativePosition = new Vector2(50, 0);
+
+            eventDoubleClick += OnDoubleClick;
         }
 
         public override void Update()
@@ -65,7 +67,6 @@ namespace Compass
             {
                 toggle();
             }
-            
             
             if (!is_active)
                 return;
@@ -136,6 +137,26 @@ namespace Compass
             }
         }
 
+        public void rotateCameraNorth()
+        {
+            float angleOffset = PlayerPrefs.GetFloat("CompassAngleOffset", 180f);
+            CameraController camera = GameObject.FindObjectOfType<CameraController>();
+            float angle = (Camera.main.transform.eulerAngles.y + angleOffset) % 360;
+
+            if(camera != null)
+            {
+                if (angle > 180)
+                {
+                    //Camera.main.transform.Rotate(Vector3.up, 360 - angle);
+                    camera.transform.Rotate(Vector3.up, 360 - angle);
+                }
+                else
+                {
+                    //Camera.main.transform.Rotate(Vector3.up, - angle);
+                    camera.transform.Rotate(Vector3.up, - angle);
+                }
+            }
+        }
 
         protected override void OnPositionChanged()
         {
@@ -149,21 +170,40 @@ namespace Compass
         protected void UpdateDirection()
         {
             float angleOffset = PlayerPrefs.GetFloat("CompassAngleOffset", 180f);
+            bool isAviationMode = (PlayerPrefs.GetInt("CompassAviationMode", 0) == 1);
+
             float angle = Camera.main.transform.eulerAngles.y + angleOffset;
 
             if (angle > 360)
                 angle -= 360f;
 
-            m_angleLabel.text = angle.ToString("F0") + "° ";
-            m_directionLabel.text = GetCardinalDirection(angle);
+            if (isAviationMode)
+                m_angleLabel.text = Mathf.Round(angle/10).ToString("F0");
+            else
+                m_angleLabel.text = angle.ToString("F0") + "° ";
+
+            m_directionLabel.text = GetCardinalDirection(angle, isAviationMode);
         }
 
-
-        private string GetCardinalDirection(float angle)
+        protected void OnDoubleClick(UIComponent component, UIMouseEventParameter eventParam)
         {
-            string[] directions = { "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW" };
-            int index = Mathf.RoundToInt(angle / 22.5f);
-            return directions[index % 16];
+            rotateCameraNorth();
+        }
+
+        private string GetCardinalDirection(float angle, bool isAviationMode = false)
+        {
+            if(isAviationMode)
+            {
+                string[] directions = { "N", "E", "S", "W" };
+                int index = Mathf.RoundToInt(angle / 90f);
+                return directions[index % 4];
+            }
+            else
+            {
+                string[] directions = { "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW" };
+                int index = Mathf.RoundToInt(angle / 22.5f);
+                return directions[index % 16];
+            }
         }
     }
 }

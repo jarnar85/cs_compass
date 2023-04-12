@@ -34,6 +34,6 @@ using System.Runtime.InteropServices;
 #if DEBUG
 [assembly: AssemblyVersion("1.0.*")]
 #else
-[assembly: AssemblyVersion("1.0.0.5")]
+[assembly: AssemblyVersion(Compass.CompassMod.version)]
 #endif
-[assembly: AssemblyFileVersion("1.0.0.5")]
+[assembly: AssemblyFileVersion(Compass.CompassMod.version)]

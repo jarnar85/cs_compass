@@ -71,6 +71,17 @@ namespace Compass
 
             return keyMapping;
         }
+
+        internal UILabel AddLabel(string p)
+        {
+            UIPanel parentPanel = (helperBase as UIHelper).self as UIPanel;
+
+            UILabel label = parentPanel.AddUIComponent<UILabel>();
+            label.text = p;
+
+
+            return label;
+        }
     }
 
     class UIKeyMapping : UIInteractiveComponent
