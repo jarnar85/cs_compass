@@ -58,9 +58,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Panel\Disc.cs" />
+    <Compile Include="Panel\Manager.cs" />
+    <Compile Include="Panel\Rose.cs" />
     <Compile Include="CompassSettingsHelper.cs" />
-    <Compile Include="CompassUIHelper.cs" />
-    <Compile Include="CompassPanel.cs" />
+    <Compile Include="UI\Background.cs" />
+    <Compile Include="UI\Panel.cs" />
+    <Compile Include="UI\KeyMapping.cs" />
+    <Compile Include="UI\Helper.cs" />
+    <Compile Include="Panel\Solidstate.cs" />
     <Compile Include="CompassLoading.cs" />
     <Compile Include="CompassMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
